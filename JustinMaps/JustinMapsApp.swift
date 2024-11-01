@@ -11,7 +11,8 @@ import SwiftUI
 struct JustinMapsApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeScreen()
+                .frame(minWidth: 1280, minHeight: 720)
         }
     }
 }
