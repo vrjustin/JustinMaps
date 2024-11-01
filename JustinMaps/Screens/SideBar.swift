@@ -12,16 +12,17 @@ struct SideBar: View {
     private var vm = SearchResultsViewModel()
     
     @State private var search: String = ""
+    @EnvironmentObject var appState: AppState
     
     
     var body: some View {
         VStack {
-            SearchResultsList()
+            SearchResultsList(places: appState.places)
         }
         .searchable(text: $search, placement: .sidebar, prompt: "Search Maps")
         .onChange(of: search) { value in
-            vm.search(text: search) {
-                
+            vm.search(text: search) { places in
+                appState.places = places
             }
         }
         .padding()

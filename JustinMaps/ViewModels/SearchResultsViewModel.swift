@@ -12,7 +12,7 @@ class SearchResultsViewModel {
     
     private let locationManager = LocationManager()
     
-    func search(text: String, completion: @escaping () -> Void) {
+    func search(text: String, completion: @escaping ([PlaceAnnotation]) -> Void) {
         
         if text.count < 4 {
             return
@@ -30,8 +30,8 @@ class SearchResultsViewModel {
                 return
             }
             
-            print(response.mapItems)
-            
+            let places = response.mapItems.map(PlaceAnnotation.init)
+            completion(places)
         }
         
     }
