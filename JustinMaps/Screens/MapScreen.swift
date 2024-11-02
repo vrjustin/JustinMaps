@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct MapScreen: View {
+    
+    @EnvironmentObject var appState: AppState
+    
     var body: some View {
-        MapView()
+        MapView(annotations: appState.places)
     }
 }
 

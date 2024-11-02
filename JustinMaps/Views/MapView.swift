@@ -13,6 +13,12 @@ struct MapView: NSViewRepresentable {
     
     typealias NSViewType = MKMapView
     
+    private var annotations: [PlaceAnnotation] = []
+    
+    init(annotations: [PlaceAnnotation]) {
+        self.annotations = annotations
+    }
+    
     func makeNSView(context: Context) -> MKMapView {
         let map = MKMapView()
         map.showsUserLocation = true
@@ -20,7 +26,13 @@ struct MapView: NSViewRepresentable {
         return map
     }
     
-    func updateNSView(_ nsView: MKMapView, context: Context) {
+    func updateNSView(_ map: MKMapView, context: Context) {
+        
+        // remove existing annotations
+        map.removeAnnotations(map.annotations)
+        
+        // add new ones
+        map.addAnnotations(annotations)
         
     }
     
