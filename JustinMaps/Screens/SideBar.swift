@@ -8,8 +8,27 @@
 import SwiftUI
 
 struct SideBar: View {
+    
+    private var vm = SearchResultsViewModel()
+    
+    @State private var search: String = ""
+    @EnvironmentObject var appState: AppState
+    
+    
     var body: some View {
-        Text("Sidebar Placeholder")
+        VStack {
+            SearchResultsList(places: appState.places) { placeAnnotation in
+                appState.selectedPlace = placeAnnotation
+                print(placeAnnotation.title)
+            }
+        }
+        .searchable(text: $search, placement: .sidebar, prompt: "Search Maps")
+        .onChange(of: search) { value in
+            vm.search(text: search) { places in
+                appState.places = places
+            }
+        }
+        .padding()
     }
 }
 

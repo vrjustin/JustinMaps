@@ -32,7 +32,10 @@ class LocationManager: NSObject, ObservableObject {
 extension LocationManager: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.first else { return }
+        guard let location = locations.first else {
+            //Can we fake a CLLocation here if we are in test/dev mode?
+            return
+        }
         
         DispatchQueue.main.async { [weak self] in
             self?.location = location
