@@ -14,9 +14,11 @@ struct MapView: NSViewRepresentable {
     typealias NSViewType = MKMapView
     
     private var annotations: [PlaceAnnotation] = []
+    private var selectedAnnotation: PlaceAnnotation?
     
-    init(annotations: [PlaceAnnotation]) {
+    init(annotations: [PlaceAnnotation], selectedPlace: PlaceAnnotation?) {
         self.annotations = annotations
+        self.selectedAnnotation = selectedPlace
     }
     
     func makeNSView(context: Context) -> MKMapView {
@@ -33,6 +35,10 @@ struct MapView: NSViewRepresentable {
         
         // add new ones
         map.addAnnotations(annotations)
+        
+        if let selectedAnnotation = selectedAnnotation {
+            map.selectAnnotation(selectedAnnotation, animated: true)
+        }
         
     }
     

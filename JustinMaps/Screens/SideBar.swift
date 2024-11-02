@@ -17,7 +17,10 @@ struct SideBar: View {
     
     var body: some View {
         VStack {
-            SearchResultsList(places: appState.places)
+            SearchResultsList(places: appState.places) { placeAnnotation in
+                appState.selectedPlace = placeAnnotation
+                print(placeAnnotation.title)
+            }
         }
         .searchable(text: $search, placement: .sidebar, prompt: "Search Maps")
         .onChange(of: search) { value in

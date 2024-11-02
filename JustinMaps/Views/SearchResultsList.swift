@@ -10,7 +10,14 @@ import SwiftUI
 struct SearchResultsList: View {
     
     let places: [PlaceAnnotation]
+    var onSelect: (PlaceAnnotation) -> Void
+    
     @StateObject private var locationManager = LocationManager()
+    
+    init(places: [PlaceAnnotation], onSelect: @escaping (PlaceAnnotation) -> Void) {
+        self.places = places
+        self.onSelect = onSelect
+    }
     
     func formatDistance(for place: PlaceAnnotation) -> String {
         let distanceInMeters = place.getDistance(userLocation: locationManager.location)
@@ -26,10 +33,14 @@ struct SearchResultsList: View {
                     .font(.caption)
                     .opacity(0.4)
             }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                onSelect(place)
+            }
         }
     }
 }
 
 #Preview {
-    SearchResultsList(places: [])
+    SearchResultsList(places: [], onSelect: { _ in})
 }
