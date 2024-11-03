@@ -24,11 +24,26 @@ final class MapViewCoordinator: NSObject, MKMapViewDelegate {
             let start = MKMapItem.forCurrentLocation()
             let destination = MKMapItem(placemark: MKPlacemark(coordinate: placeAnnotation.coordinate))
             
-            self?.calculateRoute(start: start, destination: destination)
+            self?.calculateRoute(start: start, destination: destination) { route in
+                if let route = route {
+                    
+                    view.detailCalloutAccessoryView = nil
+                    
+                    let controller = RouteContentViewController(route: route)
+                    let routePopover = RoutePopover(controller: controller)
+                    
+                    let positioningView = NSView(frame: NSRect(x: mapView.frame.width/2.6, y: 0, width: mapView.frame.width/2, height: 30.0))
+                    
+                    mapView.addSubview(positioningView)
+                    
+                    routePopover.show(relativeTo: positioningView.frame, of: positioningView, preferredEdge: .minY)
+                    
+                }
+            }
         })
     }
     
-    func calculateRoute(start: MKMapItem, destination: MKMapItem) {
+    func calculateRoute(start: MKMapItem, destination: MKMapItem, completion: @escaping (MKRoute?) -> Void) {
         
         let directionsRequest = MKDirections.Request()
         directionsRequest.transportType = .automobile
@@ -48,11 +63,7 @@ final class MapViewCoordinator: NSObject, MKMapViewDelegate {
                     return
             }
             
-            for step in route.steps {
-                print(step.instructions)
-            }
-            
-            
+            completion(route)
         }
         
     }
