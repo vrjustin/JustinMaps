@@ -9,15 +9,21 @@ import SwiftUI
 
 struct HomeScreen: View {
     
+    @AppStorage("useLightMap") var useLightMap: Bool = false
+    
     private func toggleSidebar() {
             NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
     }
     
     var body: some View {
         NavigationView {
-            SideBar()
-                .frame(minWidth: 200)
-            MapScreen()
+            Group {
+                SideBar()
+                    .frame(minWidth: 200)
+                MapScreen()
+            }
+            .preferredColorScheme(useLightMap ? .light : .dark)
+            
         }
         .toolbar {
             ToolbarItem(placement: .navigation) {
@@ -31,4 +37,5 @@ struct HomeScreen: View {
 
 #Preview {
     HomeScreen()
+        .environmentObject(AppState())
 }
