@@ -36,11 +36,24 @@ final class MapViewCoordinator: NSObject, MKMapViewDelegate {
                     
                     mapView.addSubview(positioningView)
                     
+                    //Clear all overlays on the map.
+                    mapView.removeOverlays(mapView.overlays)
+                    
+                    //Add in the currect one.
+                    mapView.addOverlay(route.polyline, level: .aboveRoads)
+                    
                     routePopover.show(relativeTo: positioningView.frame, of: positioningView, preferredEdge: .minY)
                     
                 }
             }
         })
+    }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: any MKOverlay) -> MKOverlayRenderer {
+        let renderer = MKPolylineRenderer(overlay: overlay)
+        renderer.lineWidth = 5.0
+        renderer.strokeColor = NSColor.purple
+        return renderer
     }
     
     func calculateRoute(start: MKMapItem, destination: MKMapItem, completion: @escaping (MKRoute?) -> Void) {
