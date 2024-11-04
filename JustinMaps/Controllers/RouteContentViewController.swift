@@ -23,8 +23,7 @@ class RouteContentViewController: NSViewController {
     }
     
     override func loadView() {
-//        self.view = RouteCall
-        self.view = NSView(frame: NSRect(x: 0, y: 0, width: 300, height: 300))
+        self.view = RouteCalloutView(route: route)
     }
     
     
