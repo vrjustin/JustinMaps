@@ -12,12 +12,15 @@ import MapKit
 class PlaceCalloutView: NSView {
     
     private var annotation: PlaceAnnotation
+    private var selectShowDirections: (PlaceAnnotation) -> Void
     
     lazy var directionsButton: NSButton = {
         let directionsButton = NSButton(frame: NSRect(x: 0, y: 0, width: 100, height: 100))
         directionsButton.title = "Get Directions"
         directionsButton.wantsLayer = true
         directionsButton.isBordered = false
+        directionsButton.target = self
+        directionsButton.action = #selector(handleShowDirections)
         
         return directionsButton
     }()
@@ -38,8 +41,14 @@ class PlaceCalloutView: NSView {
         return addressTextField
     }()
     
-    init(annotation: PlaceAnnotation, frame: CGRect = CGRect(x: 0, y: 0, width: 400, height: 400))  {
+    @objc
+    private func handleShowDirections() {
+        selectShowDirections(annotation)
+    }
+    
+    init(annotation: PlaceAnnotation, frame: CGRect = CGRect(x: 0, y: 0, width: 400, height: 400), selectShowDirections: @escaping (PlaceAnnotation) -> Void)  {
         self.annotation = annotation
+        self.selectShowDirections = selectShowDirections
         super.init(frame: frame)
         configure()
     }
