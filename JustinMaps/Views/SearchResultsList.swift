@@ -12,7 +12,10 @@ struct SearchResultsList: View {
     let places: [PlaceAnnotation]
     var onSelect: (PlaceAnnotation) -> Void
     
+    @AppStorage("distanceUnit") private var distanceUnit: DistanceUnit = .miles
     @StateObject private var locationManager = LocationManager()
+    
+    private var distanceFormatter = DistanceFormatter()
     
     init(places: [PlaceAnnotation], onSelect: @escaping (PlaceAnnotation) -> Void) {
         self.places = places
@@ -20,8 +23,12 @@ struct SearchResultsList: View {
     }
     
     func formatDistance(for place: PlaceAnnotation) -> String {
-        let distanceInMeters = place.getDistance(userLocation: locationManager.location)
-        return distanceInMeters != nil ? "\(String(describing: distanceInMeters!))" : ""
+        guard let distanceInMeters = place.getDistance(userLocation: locationManager.location) else {
+            return "Unknown"
+        }
+        
+        distanceFormatter.unitOptions = distanceUnit
+        return distanceFormatter.format(distanceInMeters: distanceInMeters)
     }
     
     var body: some View {

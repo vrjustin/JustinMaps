@@ -16,5 +16,13 @@ struct JustinMapsApp: App {
                 .frame(minWidth: 1280, minHeight: 720)
                 .environmentObject(appState)
         }
+        .commands {
+            CommandGroup(after: .appInfo) {
+                Button("Preferences") {
+                    PreferencesScreen()
+                        .openInWindow(title: "Preferences", sender: self)
+                }
+            }
+        }
     }
 }
